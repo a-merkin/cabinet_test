@@ -1,7 +1,7 @@
 <template>
   <div class="block default-inner-gap width100">
     <div class="flex column gap-base">
-      <DateRange v-model="rawDataRange" @change="handleDataRangeChange"/>
+      <DateRange v-model="rawDataRange" />
       <Search
         v-model:searchQuery="searchParams.search_value"
         v-model:type="searchParams.search_type"
@@ -55,10 +55,25 @@ const searchParams: Ref<SearchParams> = ref({
 
 const rawDataRange = ref([])
 
-const handleDataRangeChange = ({date_start: dateStart, date_finish: dateFinish}: { date_start: string; date_finish: string }) => {
-  searchParams.value.date_start = dateStart
-  searchParams.value.date_finish = dateFinish
-}
+watch(rawDataRange, (newValue) => {
+  if (!newValue) {
+    searchParams.value.date_start = ''
+    searchParams.value.date_finish = ''
+
+    return
+  }
+
+  searchParams.value.date_start = getDate(rawDataRange.value[0])
+  searchParams.value.date_finish = getDate(rawDataRange.value[1])
+})
+
+const getDate = (date: Date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  return `${year}${month}${day}`;
+};
 
 const updateParams = () => {
   emit('updateParams', searchParams.value)
