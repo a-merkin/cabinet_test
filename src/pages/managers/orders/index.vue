@@ -2,7 +2,10 @@
   <div>
     <FixedLeftColumn>
       <template #fixed>
-        <OrderSearch />
+        <div class="flex column gap-base">
+          <OrderSearch />
+          <YearPicker />
+        </div>
       </template>
     </FixedLeftColumn>
   </div>

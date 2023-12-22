@@ -1,11 +1,13 @@
 <template>
-  <div class="block">
-    <DateRange />
-    <Search
-      v-bind="searchValue"
-      v-model:searchQuery="searchValue.searchQuery"
-      v-model:type="searchValue.type"
-    />
+  <div class="block default-inner-gap width100">
+    <div class="flex column gap-base">
+      <DateRange />
+      <Search
+        v-bind="searchValue"
+        v-model:searchQuery="searchValue.searchQuery"
+        v-model:type="searchValue.type"
+      />
+    </div>
   </div>
 </template>
 
