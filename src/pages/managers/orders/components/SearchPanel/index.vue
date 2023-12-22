@@ -1,13 +1,11 @@
 <template>
   <div class="block default-inner-gap width100">
     <div class="flex column gap-base">
-      <DateRange />
+      <DateRange v-model="rawDataRange" @change="handleDataRangeChange"/>
       <Search
-        :searchQuery="searchParams.search_value"
-        :type="searchParams.search_type"
-        :types="searchTypesValues"
         v-model:searchQuery="searchParams.search_value"
         v-model:type="searchParams.search_type"
+        :types="searchTypesValues"
         @submit="updateParams"
       />
     </div>
@@ -50,8 +48,17 @@ const searchTypesValues: SearchTypes = {
 
 const searchParams: Ref<SearchParams> = ref({
   search_value: '',
-  search_type: 'order_number'
+  search_type: 'order_number',
+  date_start: '',
+  date_finish: ''
 })
+
+const rawDataRange = ref([])
+
+const handleDataRangeChange = ({date_start: dateStart, date_finish: dateFinish}: { date_start: string; date_finish: string }) => {
+  searchParams.value.date_start = dateStart
+  searchParams.value.date_finish = dateFinish
+}
 
 const updateParams = () => {
   emit('updateParams', searchParams.value)

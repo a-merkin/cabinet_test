@@ -5,7 +5,7 @@
         <QueryForm @update-params="handleParamsChange" />
       </template>
       <template #default>
-        <div class="flex column gap-base" v-if="orders">
+        <div v-if="orders" class="flex column gap-base">
           <StatusCard v-for="order in orders" :key="order.id">
             <p class="text-20 default-inner-gap">№: {{ order.id }}</p>
           </StatusCard>
@@ -32,7 +32,9 @@ import type { SearchParams } from "./components/SearchPanel";
 const queryParams: Ref<QueryParams> = ref({
   search_value: "",
   search_type: "",
-  year: null
+  year: "",
+  date_start: "",
+  date_finish: ""
 });
 
 const handleParamsChange = (params: QueryParams) => {
@@ -45,16 +47,17 @@ const updateParams = (current: any, updates: YearParams | SearchParams) => {
   return { ...current, ...updates };
 };
 
-watch(queryParams, () => {
-  makeRequest().then(({ response }) => {
-    orders.value = response.data.orders;
-  });
-});
-
-const makeRequest = async () => {
+const fetchOrders = async () => {
   const data: string = await internalAPIFetch("method/orders.getTest", { params: queryParams.value });
-  return JSON.parse(data);
+  const { response } = JSON.parse(data);
+  orders.value = response.data.orders;
 };
+
+fetchOrders()
+
+watch(queryParams, () => {
+  fetchOrders()
+});
 </script>
 
 <style scoped></style>
