@@ -2,7 +2,10 @@
   <div>
     <FixedLeftColumn>
       <template #fixed>
-        <QueryForm @update-params="handleParamsChange" />
+        <div class="flex column gap-base">
+          <Button size="large" class="width100">Назад</Button>
+          <QueryForm @update-params="handleParamsChange" />
+        </div>
       </template>
       <template #default>
         <div v-if="orders" class="flex column gap-base">
@@ -22,6 +25,7 @@ import { ref } from "vue";
 import FixedLeftColumn from "@/views/layout/fixed-left-column.vue";
 import { StatusCard } from "@/ui/status-card";
 import { Empty } from "@/ui/empty";
+import { Button } from '@/ui/button'
 import { internalAPIFetch } from "@/api/internal";
 
 import { QueryForm } from "./components/QueryForm";
@@ -60,4 +64,6 @@ watch(queryParams, () => {
 });
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+
+</style>
