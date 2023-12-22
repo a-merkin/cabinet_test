@@ -1,4 +1,5 @@
 import SearchPanel from './index.vue'
-import type {SearchParams} from './type'
+import type { SearchParams } from './type'
 
-export { SearchPanel, SearchParams }
+export { SearchPanel }
+export type { SearchParams }

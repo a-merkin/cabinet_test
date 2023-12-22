@@ -1,3 +1,3 @@
 export type YearParams = {
-  year: number
+  year: number | null
 }

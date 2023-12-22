@@ -3,9 +3,11 @@
     <div class="flex column gap-base">
       <DateRange />
       <Search
-        v-bind="searchParams"
-        v-model:searchQuery="searchParams.searchQuery"
-        v-model:type="searchParams.type"
+        :searchQuery="searchParams.search_value"
+        :type="searchParams.search_type"
+        :types="searchTypesValues"
+        v-model:searchQuery="searchParams.search_value"
+        v-model:type="searchParams.search_type"
         @submit="updateParams"
       />
     </div>
@@ -47,9 +49,8 @@ const searchTypesValues: SearchTypes = {
 }
 
 const searchParams: Ref<SearchParams> = ref({
-  searchQuery: '',
-  types: searchTypesValues,
-  type: 'order_number'
+  search_value: '',
+  search_type: 'order_number'
 })
 
 const updateParams = () => {

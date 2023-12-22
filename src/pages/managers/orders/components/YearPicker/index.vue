@@ -8,7 +8,7 @@
       />
       <div class="flex justify-content-between">
         <Button color="purple" size="large" @click="updateParams">Показать</Button>
-        <Button size="large">Сбросить</Button>
+        <Button size="large" @click="resetParams">Сбросить</Button>
       </div>
     </div>
   </div>
@@ -45,6 +45,11 @@ const selectedYear: Ref<YearParams> = ref({
 })
 
 const updateParams = () => {
+  emit('updateParams', selectedYear.value)
+}
+
+const resetParams = () => {
+  selectedYear.value.year = null
   emit('updateParams', selectedYear.value)
 }
 </script>

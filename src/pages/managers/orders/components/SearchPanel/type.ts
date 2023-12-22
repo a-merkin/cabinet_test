@@ -1,7 +1,6 @@
 import type { SearchTypes } from '@/components/shared/search'
 
 export type SearchParams = {
-  searchQuery: string,
-  types: SearchTypes,
-  type: keyof SearchTypes;
+  search_value: string,
+  search_type: keyof SearchTypes;
 }
