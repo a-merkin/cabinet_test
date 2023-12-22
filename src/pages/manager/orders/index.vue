@@ -3,7 +3,7 @@
     <FixedLeftColumn>
       <template #fixed>
         <div class="flex column gap-base">
-          <Button size="large" class="width100">Назад</Button>
+          <Button size="large" class="button-back width100">Назад</Button>
           <QueryForm @update-params="handleParamsChange" />
         </div>
       </template>
@@ -65,5 +65,11 @@ watch(queryParams, () => {
 </script>
 
 <style lang="scss" scoped>
+.button-back {
+  display: none;
 
+  @include active-by("lg") {
+    display: block;
+  }
+}
 </style>
