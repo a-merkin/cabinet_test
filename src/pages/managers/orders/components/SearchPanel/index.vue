@@ -3,9 +3,10 @@
     <div class="flex column gap-base">
       <DateRange />
       <Search
-        v-bind="searchValue"
-        v-model:searchQuery="searchValue.searchQuery"
-        v-model:type="searchValue.type"
+        v-bind="searchParams"
+        v-model:searchQuery="searchParams.searchQuery"
+        v-model:type="searchParams.type"
+        @submit="updateParams"
       />
     </div>
   </div>
@@ -18,7 +19,9 @@ import { DateRange } from '@/ui/date-range'
 import { Search } from '@/components/shared/search'
 import type { SearchTypes } from '@/components/shared/search'
 
-import type { SearchValue } from './type.ts'
+import type { SearchParams } from './type.ts'
+
+const emit = defineEmits(["updateParams"]);
 
 const searchTypesValues: SearchTypes = {
   order_number: {
@@ -43,11 +46,15 @@ const searchTypesValues: SearchTypes = {
   },
 }
 
-const searchValue: Ref<SearchValue> = ref({
+const searchParams: Ref<SearchParams> = ref({
   searchQuery: '',
   types: searchTypesValues,
   type: 'order_number'
 })
+
+const updateParams = () => {
+  emit('updateParams', searchParams.value)
+}
 </script>
 
 <style scoped>

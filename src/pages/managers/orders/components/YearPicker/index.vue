@@ -2,11 +2,12 @@
   <div class="block default-inner-gap width100">
     <div class="flex column gap-base">
       <Select
+        name="year"
         :items="yearsItems"
-        v-model="selectedYear"
+        v-model="selectedYear.year"
       />
       <div class="flex justify-content-between">
-        <Button color="purple" size="large">Показать</Button>
+        <Button color="purple" size="large" @click="updateParams">Показать</Button>
         <Button size="large">Сбросить</Button>
       </div>
     </div>
@@ -18,7 +19,11 @@ import { ref } from 'vue'
 
 import { Select } from '@/ui/select'
 import type { SelectItems } from '@/ui/select'
-import {Button} from '@/ui/button'
+import { Button } from '@/ui/button'
+
+import type { YearParams } from './index.ts'
+
+const emit = defineEmits(["updateParams"]);
 
 const yearsItems: SelectItems = [
   {
@@ -35,7 +40,13 @@ const yearsItems: SelectItems = [
   },
 ]
 
-const selectedYear: Ref<SelectItems[number]> = ref(null)
+const selectedYear: Ref<YearParams> = ref({
+  year: null
+})
+
+const updateParams = () => {
+  emit('updateParams', selectedYear.value)
+}
 </script>
 
 <style scoped>
