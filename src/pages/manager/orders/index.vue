@@ -1,68 +1,43 @@
 <template>
   <div>
-    <FixedLeftColumn>
-      <template #fixed>
-        <div class="flex column gap-base">
-          <Button color="purple" size="large" class="button-back width100" @click="router.back">Назад</Button>
-          <QueryForm @update-params="handleParamsChange" />
-        </div>
-      </template>
-      <template #default>
-        <div v-if="orders" class="flex column gap-base">
-          <StatusCard v-for="order in orders" :key="order.id">
-            <p class="text-20 default-inner-gap"><NuxtLink :to="`/manager/orders/${order.id}`" >№: {{ order.id }}</NuxtLink></p>
-          </StatusCard>
-        </div>
-        <Empty v-else>Заказов еще нет</Empty>
-      </template>
-    </FixedLeftColumn>
+    <div v-if="orders" class="flex column gap-base">
+      <StatusCard v-for="order in orders" :key="order.id">
+        <p class="text-20 default-inner-gap">
+          <NuxtLink :to="`/manager/orders/${order.id}`">№: {{ order.id }}</NuxtLink>
+        </p>
+      </StatusCard>
+    </div>
+    <Empty v-else>Заказов еще нет</Empty>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 
-import FixedLeftColumn from "@/views/layout/fixed-left-column.vue";
 import { StatusCard } from "@/ui/status-card";
 import { Empty } from "@/ui/empty";
-import { Button } from '@/ui/button'
 import { internalAPIFetch } from "@/api/internal";
 
-import { QueryForm } from "./components/QueryForm";
-import type { QueryParams, Order } from "./types";
-import type { YearParams } from "./components/YearPicker";
-import type { SearchParams } from "./components/SearchPanel";
+import type { Order, QueryParams } from "./types";
 
-const router = useRouter()
-
-const queryParams: Ref<QueryParams> = ref({
-  search_value: "",
-  search_type: "",
-  year: "",
-  date_start: "",
-  date_finish: ""
+definePageMeta({
+  layout: "orders"
 });
 
-const handleParamsChange = (params: QueryParams) => {
-  queryParams.value = updateParams(queryParams.value, params);
-};
+const attrs = useAttrs();
 
 const orders: Ref<Order[] | null> = ref(null);
 
-const updateParams = (current: any, updates: YearParams | SearchParams) => {
-  return { ...current, ...updates };
-};
-
 const fetchOrders = async () => {
-  const data: string = await internalAPIFetch("method/orders.getTest", { params: queryParams.value });
+  const data: string = await internalAPIFetch("method/orders.getTest", { params: attrs.queryParams as QueryParams });
   const { response } = JSON.parse(data);
   orders.value = response.data.orders;
 };
 
-fetchOrders()
+fetchOrders();
 
-watch(queryParams, () => {
-  fetchOrders()
+watch(() => attrs.queryParams, () => {
+  fetchOrders();
 });
 </script>
 
