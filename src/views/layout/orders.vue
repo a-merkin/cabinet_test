@@ -8,7 +8,7 @@
         </div>
       </template>
       <template #default>
-        <slot :queryParams="queryParams" />
+        <slot />
       </template>
     </FixedLeftColumn>
   </div>
@@ -26,8 +26,6 @@ import type { SearchParams } from "@/components/SearchPanel";
 
 const router = useRouter()
 const route = useRoute()
-
-console.log(route)
 
 const queryParams: Ref<QueryParams> = ref({
   search_value: "",
