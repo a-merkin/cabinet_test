@@ -37,7 +37,24 @@ const fetchOrders = async () => {
   loading.value = false
 };
 
-fetchOrders();
+const fetchOrder = async () => {
+  loading.value = true
+  const data: string = await internalAPIFetch(`method/orders.getTest/${route.params.slug}`,
+    {
+      params: {
+        search_value: route.params.slug,
+        search_type: 'order_number'
+      }
+    }
+  );
+  const { response } = JSON.parse(data);
+  orders.value = response.data.orders;
+  loading.value = false
+};
+
+if (route.params.slug) {
+  fetchOrder()
+} else fetchOrders();
 
 watch(
   () => route.query,
