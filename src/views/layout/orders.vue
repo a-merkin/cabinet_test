@@ -8,7 +8,7 @@
         </div>
       </template>
       <template #default>
-        <NuxtPage :queryParams="queryParams" />
+        <slot :queryParams="queryParams" />
       </template>
     </FixedLeftColumn>
   </div>
@@ -19,16 +19,15 @@ import { ref } from "vue";
 
 import FixedLeftColumn from "@/views/layout/fixed-left-column.vue";
 import { Button } from '@/ui/button'
-import { QueryForm } from "@/pages/manager/orders/components/QueryForm";
+import { QueryForm } from "@/components/QueryForm";
 import type { QueryParams } from "@/pages/manager/orders/types";
-import type { YearParams } from "@/pages/manager/orders/components/YearPicker";
-import type { SearchParams } from "@/pages/manager/orders/components/SearchPanel";
-
-definePageMeta({
-  layout: 'default'
-})
+import type { YearParams } from "@/components/YearPicker";
+import type { SearchParams } from "@/components/SearchPanel";
 
 const router = useRouter()
+const route = useRoute()
+
+console.log(route)
 
 const queryParams: Ref<QueryParams> = ref({
   search_value: "",
@@ -40,6 +39,10 @@ const queryParams: Ref<QueryParams> = ref({
 
 const handleParamsChange = (params: QueryParams) => {
   queryParams.value = updateParams(queryParams.value, params);
+  router.push({
+    path: '/manager/orders/',
+    query: { ...route.query, ...queryParams.value }
+  });
 };
 
 const updateParams = (current: any, updates: YearParams | SearchParams) => {
